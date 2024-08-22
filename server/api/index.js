@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/api/generate_code', async (req, res) => {
-  const { prompt, language, conversation_history, model } = req.body;
+  const { prompt, language, conversation_history, model, provider } = req.body;
   const apiKey = req.headers.authorization?.split(' ')[1];
 
   if (!apiKey) {
@@ -16,10 +16,7 @@ app.post('/api/generate_code', async (req, res) => {
   }
 
   try {
-    const openai = new OpenAI({ apiKey });
-    // Use the openai instance to generate code
-    // ...
-
+    const result = await chatbot.generateCode(prompt, language, conversation_history, apiKey, model, provider);
     res.json(result);
   } catch (error) {
     console.error('Error in /generate_code:', error);
