@@ -15,12 +15,8 @@ const ChatbotApp = () => {
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/model_status')
-      .then((response) => response.json())
-      .then((data) => {
-        setIsModelLoading(!data.loaded);
-      });
-  }, []);
+    setIsModelLoading(!apiKey);
+  }, [apiKey]);
 
   const sendMessage = () => {
     if (userInput.trim()) {
