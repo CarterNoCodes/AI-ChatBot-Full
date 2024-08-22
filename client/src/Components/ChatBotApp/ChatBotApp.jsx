@@ -44,8 +44,9 @@ const ChatbotApp = () => {
         });
 
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Network response was not ok');
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
         }
 
         const data = await response.json();
@@ -54,7 +55,7 @@ const ChatbotApp = () => {
           addMessage('bot', data.analysis);
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Detailed error:', error);
         addMessage('bot', `Error: ${error.message}`);
       }
     }
