@@ -4,8 +4,7 @@
     "scripts": {
       "dev": "vite",
       "build": "vite build",
-      "preview": "vite preview",
-      "vercel-build": "cd client && npm install && npm run build"
+      "preview": "vite preview"
     },
     "dependencies": {
       "react": "^18.2.0",
