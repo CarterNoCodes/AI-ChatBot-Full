@@ -7,19 +7,18 @@ const ChatbotApp = () => {
   const [chatMessages, setChatMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [conversationHistory, setConversationHistory] = useState([]);
-  const [isModelLoading, setIsModelLoading] = useState(true);
-  const [showSearchModal, setShowSearchModal] = useState(false);
-  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [apiKey, setApiKey] = useState('');
   const [selectedModel, setSelectedModel] = useState('gpt-3.5-turbo');
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    setIsModelLoading(!apiKey);
-  }, [apiKey]);
+    setIsModelLoading(false);
+  }, []);
 
   const sendMessage = () => {
-    if (userInput.trim()) {
+    if (userInput.trim() && apiKey) {
       const selectedLanguage = 'python';
 
       addMessage('user', userInput);
@@ -64,6 +63,8 @@ const ChatbotApp = () => {
           console.error('Fetch Error:', error);
           addMessage('bot', 'Sorry, something went wrong.');
         });
+    } else if (!apiKey) {
+      addMessage('bot', 'Please enter your OpenAI API key in the settings.');
     }
   };
 
@@ -105,7 +106,7 @@ const ChatbotApp = () => {
             <div className="avatar">CG</div>
             <div>
               <div className="chatbot-name">CodeGPT</div>
-              <div className="chatbot-status">{isModelLoading ? 'Loading...' : 'Online'}</div>
+              <div className="chatbot-status">Online</div>
             </div>
           </div>
           <div className="header-buttons">
@@ -149,12 +150,6 @@ const ChatbotApp = () => {
           </button>
         </div>
       </div>
-      {isModelLoading && (
-        <div className="loading-overlay">
-          <div className="loading-spinner"></div>
-          <p>Model is still loading. Please wait.</p>
-        </div>
-      )}
       {showSearchModal && (
         <SearchModal
           chatMessages={chatMessages}
