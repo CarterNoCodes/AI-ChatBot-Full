@@ -7,10 +7,10 @@ router.get('/model_status', (req, res) => {
 });
 
 router.post('/generate_code', async (req, res) => {
-  const { prompt, language, conversation_history, model } = req.body;
+  const { prompt, language, conversation_history, model, provider } = req.body;
   const apiKey = req.headers.authorization.split(' ')[1];
   try {
-    const result = await chatbot.generateCode(prompt, language, conversation_history, apiKey, model);
+    const result = await chatbot.generateCode(prompt, language, conversation_history, apiKey, model, provider);
     res.json(result);
   } catch (error) {
     console.error('Error in /generate_code:', error);

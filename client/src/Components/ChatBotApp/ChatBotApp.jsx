@@ -8,6 +8,7 @@ const ChatbotApp = () => {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [apiKey, setApiKey] = useState('');
   const [selectedModel, setSelectedModel] = useState('gpt-3.5-turbo');
+  const [selectedProvider, setSelectedProvider] = useState('openai');
   const [chatMessages, setChatMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [showSearchModal, setShowSearchModal] = useState(false);
@@ -16,21 +17,45 @@ const ChatbotApp = () => {
     setChatMessages(prevMessages => [...prevMessages, { sender, content, type }]);
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (userInput.trim()) {
       addMessage('user', userInput);
       setUserInput('');
       
       if (!apiKey) {
-        addMessage('bot', 'Please enter your OpenAI API key in the settings.');
+        addMessage('bot', 'Please enter your API key in the settings.');
         return;
       }
 
-      // Here, you would typically make an API call to your backend
-      // For now, let's just simulate a response
-      setTimeout(() => {
-        addMessage('bot', 'This is a simulated response.');
-      }, 1000);
+      try {
+        const response = await fetch('/api/generate_code', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            prompt: userInput,
+            language: 'javascript',
+            conversation_history: chatMessages,
+            model: selectedModel,
+            provider: selectedProvider,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        addMessage('bot', data.code, 'code');
+        if (data.analysis) {
+          addMessage('bot', data.analysis);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage('bot', 'Sorry, an error occurred while generating the response.');
+      }
     }
   };
 
@@ -83,6 +108,8 @@ const ChatbotApp = () => {
           setApiKey={setApiKey}
           selectedModel={selectedModel}
           setSelectedModel={setSelectedModel}
+          selectedProvider={selectedProvider}
+          setSelectedProvider={setSelectedProvider}
           onClose={() => setShowSettingsModal(false)}
         />
       )}
