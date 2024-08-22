@@ -1,21 +1,30 @@
 const express = require('express');
-const router = express.Router();
-const chatbot = require('../models/chatbot');
+const cors = require('cors');
+const apiRoutes = require('../server/src/routes/api');
 
-router.get('/model_status', (req, res) => {
-  res.json({ loaded: chatbot.isModelLoaded() });
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// Add logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
 });
 
-router.post('/generate_code', async (req, res) => {
-  const { prompt, language, conversation_history, model, provider } = req.body;
-  const apiKey = req.headers.authorization.split(' ')[1];
-  try {
-    const result = await chatbot.generateCode(prompt, language, conversation_history, apiKey, model, provider);
-    res.json(result);
-  } catch (error) {
-    console.error('Error in /generate_code:', error);
-    res.status(500).json({ error: error.message, stack: error.stack });
-  }
+app.use('/api', apiRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
-module.exports = router;
+// Health check route
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK' });
+});
+
+// This is for Vercel serverless functions
+module.exports = app;
