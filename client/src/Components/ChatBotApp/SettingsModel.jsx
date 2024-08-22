@@ -1,6 +1,6 @@
 import React from 'react';
 import './model.css';
-import { providerConfigs } from '../config/providers';
+import { providerConfigs } from '../../config/providers';
 
 const SettingsModal = ({ apiKey, setApiKey, selectedModel, setSelectedModel, selectedProvider, setSelectedProvider, onClose }) => {
   const handleApiKeyChange = (e) => {
