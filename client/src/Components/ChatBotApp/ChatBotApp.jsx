@@ -66,6 +66,7 @@ const ChatbotApp = () => {
           ))}
         </div>
         <div className="chat-input-container">
+          <button className="attachment-button">📎</button>
           <input
             type="text"
             className="chat-input"
