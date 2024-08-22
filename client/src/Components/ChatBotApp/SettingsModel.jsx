@@ -2,6 +2,7 @@ import React from 'react';
 import './model.css';
 
 const SettingsModal = ({ apiKey, setApiKey, selectedModel, setSelectedModel, onClose }) => {
+  console.log('Rendering SettingsModal');
   const handleApiKeyChange = (e) => {
     setApiKey(e.target.value);
   };
