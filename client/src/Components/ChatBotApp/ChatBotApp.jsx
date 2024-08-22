@@ -37,32 +37,44 @@ const ChatbotApp = () => {
   console.log('Before return in ChatbotApp');
   return (
     <div className="chatbot-app">
-      {console.log('Inside ChatbotApp return')}
-      <h1>Chatbot App</h1>
-      <div className="chat-messages">
-        {chatMessages.map((message, index) => (
-          <div key={index} className={`message ${message.sender}`}>
-            <strong>{message.sender}: </strong>
-            {message.type === 'code' ? (
-              <pre><code>{message.content}</code></pre>
-            ) : (
-              <span>{message.content}</span>
-            )}
+      <div className="chat-container">
+        <div className="chatbot-header">
+          <div className="chatbot-info">
+            <div className="avatar">AI</div>
+            <div>
+              <div className="chatbot-name">AI Assistant</div>
+              <div className="chatbot-status">Online</div>
+            </div>
           </div>
-        ))}
-      </div>
-      <div className="chat-input">
-        <input
-          type="text"
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          placeholder="Type your message..."
-        />
-        <button onClick={sendMessage}>Send</button>
-      </div>
-      <div>
-        <button onClick={() => setShowSearchModal(true)}>Search</button>
-        <button onClick={() => setShowSettingsModal(true)}>Open Settings</button>
+          <div className="header-buttons">
+            <button className="icon-button" onClick={() => setShowSearchModal(true)}>🔍</button>
+            <button className="icon-button" onClick={() => setShowSettingsModal(true)}>⚙️</button>
+          </div>
+        </div>
+        <div className="chat-messages">
+          {chatMessages.map((message, index) => (
+            <div key={index} className={`message ${message.sender}`}>
+              <div className="message-content">
+                <div className="message-sender">{message.sender}</div>
+                {message.type === 'code' ? (
+                  <pre><code>{message.content}</code></pre>
+                ) : (
+                  <div className="message-text">{message.content}</div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="chat-input-container">
+          <input
+            type="text"
+            className="chat-input"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder="Type your message..."
+          />
+          <button className="send-button" onClick={sendMessage}>Send</button>
+        </div>
       </div>
       {showSettingsModal && (
         <SettingsModal
