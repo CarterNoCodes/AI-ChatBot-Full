@@ -10,6 +10,7 @@ const ChatbotApp = () => {
   const [selectedModel, setSelectedModel] = useState('gpt-3.5-turbo');
   const [chatMessages, setChatMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
+  const [showSearchModal, setShowSearchModal] = useState(false);
 
   const addMessage = (sender, content, type = 'text') => {
     setChatMessages(prevMessages => [...prevMessages, { sender, content, type }]);
@@ -59,7 +60,10 @@ const ChatbotApp = () => {
         />
         <button onClick={sendMessage}>Send</button>
       </div>
-      <button onClick={() => setShowSettingsModal(true)}>Open Settings</button>
+      <div>
+        <button onClick={() => setShowSearchModal(true)}>Search</button>
+        <button onClick={() => setShowSettingsModal(true)}>Open Settings</button>
+      </div>
       {showSettingsModal && (
         <SettingsModal
           apiKey={apiKey}
@@ -67,6 +71,12 @@ const ChatbotApp = () => {
           selectedModel={selectedModel}
           setSelectedModel={setSelectedModel}
           onClose={() => setShowSettingsModal(false)}
+        />
+      )}
+      {showSearchModal && (
+        <SearchModal
+          chatMessages={chatMessages}
+          onClose={() => setShowSearchModal(false)}
         />
       )}
     </div>
