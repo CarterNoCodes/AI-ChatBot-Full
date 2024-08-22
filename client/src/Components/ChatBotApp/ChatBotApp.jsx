@@ -33,7 +33,9 @@ const ChatbotApp = () => {
 
       const prompt = `Generate ${selectedLanguage} code for the following task: ${userInput}`;
 
-      fetch('http://127.0.0.1:5000/api/generate_code', {
+      const apiUrl = import.meta.env.VITE_API_URL || '/api';
+
+      fetch(`${apiUrl}/generate_code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
