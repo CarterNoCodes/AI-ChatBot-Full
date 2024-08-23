@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://ai-chat-bot-full.vercel.app/',
+        target: process.env.VITE_API_URL || 'https://ai-chat-bot-full.vercel.app/',
         changeOrigin: true,
       },
     }
