@@ -45,7 +45,7 @@ const ChatbotApp = () => {
 
         if (!response.ok) {
           const errorText = await response.text();
-          console.error('Error response:', errorText);
+          console.error('API Error:', response.status, errorText);
           throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
         }
 
@@ -55,7 +55,7 @@ const ChatbotApp = () => {
           addMessage('bot', data.analysis);
         }
       } catch (error) {
-        console.error('Detailed error:', error);
+        console.error('Fetch error:', error);
         addMessage('bot', `Error: ${error.message}`);
       }
     }
