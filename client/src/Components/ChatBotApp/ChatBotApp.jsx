@@ -32,7 +32,6 @@ const ChatbotApp = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
             prompt: userInput,
@@ -40,6 +39,7 @@ const ChatbotApp = () => {
             conversation_history: chatMessages,
             model: selectedModel,
             provider: selectedProvider,
+            apiKey: apiKey,
           }),
         });
 

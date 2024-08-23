@@ -1,30 +1,17 @@
 const express = require('express');
-const cors = require('cors');
-const apiRoutes = require('../server/src/routes/api');
+const router = express.Router();
+const chatbot = require('../models/chatbot');
 
-const app = express();
+router.post('/generate_code', async (req, res) => {
+  const { prompt, language, conversation_history, model, provider, apiKey } = req.body;
 
-app.use(cors());
-app.use(express.json());
-
-// Add logging middleware
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
+  try {
+    const result = await chatbot.generateCode(prompt, language, conversation_history, apiKey, model, provider);
+    res.json(result);
+  } catch (error) {
+    console.error('Error generating code:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
-app.use('/api', apiRoutes);
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
-});
-
-// Health check route
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK' });
-});
-
-// This is for Vercel serverless functions
-module.exports = app;
+module.exports = router;
