@@ -7,11 +7,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/api', apiRoutes);
+// Add a root route
+app.get('/', (req, res) => {
+  res.json({ message: 'API root is working' });
+});
 
 // Add a test route
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'API is working' });
+app.get('/test', (req, res) => {
+  res.json({ message: 'API test route is working' });
 });
+
+app.use('/api', apiRoutes);
 
 module.exports = app;

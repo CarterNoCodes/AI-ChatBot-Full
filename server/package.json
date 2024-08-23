@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "api/index.js",
   "scripts": {
-    "vercel-build": "cd client && npm install && npm run build",
-    "start": "node api/index.js"
+    "vercel-build": "cd ../client && npm install && npm run build",
+    "start": "node ../api/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
